@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+<head>
+    <title>Rock, Paper or Scissor?</title>
+</head>
+<body>
+    <div class="container">
+        <div class="heading">
+            <h1>Rock<i class="em em-left-facing_fist"></i> , Paper<i class="em em-rolled_up_newspaper"></i> or Scissor<i class="em em-scissors"></i>?</h1>
+            <div>
+                <button id="rock" class="btn">ROCK</button>
+                <button id="paper" class="btn">PAPER</button>
+                <button id="scissor" class="btn">SCISSOR</button>
+            </div>
+        </div>
+        <div id="result" class="resultBox">
+            <h2>Scoreboard</h2>
+            <div class="scrBrd">
+                <span id="usrScore" class="score">0</span> - <span id="compScore" class="score">0</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        const rock = document.querySelector("#rock");
+        const paper = document.querySelector("#paper");
+        const scissor = document.querySelector("#scissor");
+        const usrScrBrd = document.querySelector("#usrScore");
+        const compScrBrd = document.querySelector("#compScore");
+        const rslt = document.querySelector("#result");
+        const p = document.createElement('p');
+        let usrPts = 0;
+        let compPts = 0;
+        rock.addEventListener('click', () => {
+            p.textContent = playRound("rock", computer_play());
+            rslt.appendChild(p);
+            chkPts();
+        });
+        paper.addEventListener('click', () => {
+            p.textContent = playRound("paper", computer_play());
+            rslt.appendChild(p);
+            chkPts();
+        });
+        scissor.addEventListener('click', () => {
+            p.textContent = playRound("scissor", computer_play());
+            rslt.appendChild(p);
+            chkPts();
+        });
+        
+        //If user / computer gets a total of 5 points, display the end of game result
+        function chkPts() {
+            if(usrPts == 5) {
+                p.innerHTML = "FINAL RESULT: You have beaten the computer. Congratulations!<br>Refresh to play again.";
+                rslt.appendChild(p);
+                usrScrBrd.style.cssText = "border: 1px solid green;";
+                rock.setAttribute('disabled', '');
+                paper.setAttribute('disabled', '');
+                scissor.setAttribute('disabled', '');
+            }
+        
+            if(compPts == 5) {
+                p.innerHTML = "FINAL RESULT: The computer have beaten you. Try again next time :)<br>Refresh to play again.";
+                rslt.appendChild(p);
+                compScrBrd.style.cssText = "border: 1px solid green;";
+                rock.setAttribute('disabled', '');
+                paper.setAttribute('disabled', '');
+                scissor.setAttribute('disabled', '');
+            }
+        }
+        //Logic of the game
+        function playRound(playerSelection, computerSelection) {
+            if (playerSelection == "rock") {
+                if (computerSelection == "paper") {
+                    compPts++;
+                    compScrBrd.textContent = compPts;
+                    return "You lose! Paper beats Rock.";
+                } else if (computerSelection == "scissor") {
+                    usrPts++;
+                    usrScrBrd.textContent = usrPts;
+                    return "You win! Rock beats Scissor.";
+                } else {
+                    return "Draw!";
+                }
+            } else if (playerSelection == "paper") {
+                if (computerSelection == "rock") {
+                    usrPts++;
+                    usrScrBrd.textContent = usrPts;
+                    return "You win! Paper beats Rock.";
+                } else if (computerSelection == "scissor") {
+                    compPts++;
+                    compScrBrd.textContent = compPts;
+                    return "You lose! Scissor beats Paper.";
+                } else {
+                    return "Draw!";
+                }
+            } else if (playerSelection == "scissor") {
+                if (computerSelection == "rock") {
+                    compPts++;
+                    compScrBrd.textContent = compPts;
+                    return "You lose! Rock beats Scissor.";
+                } else if (computerSelection == "paper") {
+                    usrPts++;
+                    usrScrBrd.textContent = usrPts;
+                    return "You win! Scissor beats Paper.";
+                } else {
+                    return "Draw!";
+                }
+            } else {
+                return "Invalid input.";
+            }
+        }
+        //Use Math.random() to generate computer's action
+        function computer_play() {
+            let rand = Math.random();
+            if (rand <= 0.33) {
+                return "rock";
+            } else if (rand <= 0.66) {
+                return "paper";
+            } else {
+                return "scissor";
+            }
+        }
+    </script>
+</body>
+</html>
